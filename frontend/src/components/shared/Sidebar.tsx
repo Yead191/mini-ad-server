@@ -30,9 +30,6 @@ export function Sidebar() {
       <div>
         {/* Brand header */}
         <div className="flex items-center gap-3 px-2 py-3 mb-6">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white shadow-lg shadow-blue-500/20">
-            <Sparkles className="h-5 w-5" />
-          </div>
           <div>
             <h1 className="font-bold text-white text-base tracking-tight leading-none">
               AdForge
