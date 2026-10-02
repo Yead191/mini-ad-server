@@ -1,15 +1,25 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Creative } from '@/types/creative';
-import { Campaign } from '@/types/campaign';
-import { getCreatives, deleteCreative } from '@/helpers/next-fetch/creativeActions';
-import { getCampaigns } from '@/helpers/next-fetch/campaignActions';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { CreativeModal } from './CreativeModal';
-import { Plus, Trash2, Image as ImageIcon, ExternalLink, RefreshCw, Layers } from 'lucide-react';
-import { toast } from 'sonner';
+import React, { useState, useEffect } from "react";
+import { Creative } from "@/types/creative";
+import { Campaign } from "@/types/campaign";
+import {
+  getCreatives,
+  deleteCreative,
+} from "@/helpers/next-fetch/creativeActions";
+import { getCampaigns } from "@/helpers/next-fetch/campaignActions";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { CreativeModal } from "./CreativeModal";
+import {
+  Plus,
+  Trash2,
+  Image as ImageIcon,
+  ExternalLink,
+  RefreshCw,
+  Layers,
+} from "lucide-react";
+import { toast } from "sonner";
 
 export function CreativeList() {
   const [creatives, setCreatives] = useState<Creative[]>([]);
@@ -33,7 +43,7 @@ export function CreativeList() {
         setCampaigns(campaignRes.data);
       }
     } catch {
-      toast.error('Failed to load creatives');
+      toast.error("Failed to load creatives");
     } finally {
       setLoading(false);
     }
@@ -44,18 +54,18 @@ export function CreativeList() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to remove this creative?')) return;
+    if (!confirm("Are you sure you want to remove this creative?")) return;
     setDeletingId(id);
     try {
       const res = await deleteCreative(id);
       if (res.success) {
-        toast.success('Creative deleted');
+        toast.success("Creative deleted");
         setCreatives((prev) => prev.filter((c) => c.id !== id));
       } else {
-        toast.error(res.message || 'Failed to delete');
+        toast.error(res.message || "Failed to delete");
       }
     } catch {
-      toast.error('Network error');
+      toast.error("Network error");
     } finally {
       setDeletingId(null);
     }
@@ -65,17 +75,30 @@ export function CreativeList() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-white">Creatives</h2>
+          <h2 className="text-xl font-bold tracking-tight text-white">
+            Creatives
+          </h2>
           <p className="text-sm text-slate-400">
             Banners, dimensions, image assets, and tracking landing pages.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={fetchData} disabled={loading}>
-            <RefreshCw className={`h-4 w-4 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchData}
+            disabled={loading}
+          >
+            <RefreshCw
+              className={`h-4 w-4 mr-1.5 ${loading ? "animate-spin" : ""}`}
+            />
             Refresh
           </Button>
-          <Button variant="primary" size="sm" onClick={() => setIsModalOpen(true)}>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => setIsModalOpen(true)}
+          >
             <Plus className="h-4 w-4 mr-1.5" />
             Add Creative
           </Button>
@@ -89,11 +112,17 @@ export function CreativeList() {
       ) : creatives.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-800 bg-slate-900/20 p-12 text-center">
           <ImageIcon className="h-10 w-10 text-slate-600 mb-3" />
-          <h3 className="text-base font-semibold text-white">No creatives found</h3>
+          <h3 className="text-base font-semibold text-white">
+            No creatives found
+          </h3>
           <p className="text-xs text-slate-400 max-w-sm mt-1 mb-4">
             Add banner creatives with width, height, and destination links.
           </p>
-          <Button variant="primary" size="sm" onClick={() => setIsModalOpen(true)}>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => setIsModalOpen(true)}
+          >
             <Plus className="h-4 w-4 mr-1.5" />
             Add Creative
           </Button>
@@ -113,7 +142,7 @@ export function CreativeList() {
                   alt={`Creative ${c.width}x${c.height}`}
                   className="max-h-full max-w-full object-contain rounded"
                   onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
+                    (e.target as HTMLElement).style.display = "none";
                   }}
                 />
                 <div className="absolute top-2 right-2">
@@ -129,7 +158,7 @@ export function CreativeList() {
                   <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
                     <Layers className="h-3.5 w-3.5 text-blue-400" />
                     <span className="font-medium text-slate-300 truncate">
-                      {c.campaign?.name || 'Unassigned'}
+                      {c.campaign?.name || "Unassigned"}
                     </span>
                   </div>
 
@@ -146,7 +175,7 @@ export function CreativeList() {
                     className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 font-medium truncate max-w-[200px]"
                   >
                     <ExternalLink className="h-3 w-3 flex-shrink-0" />
-                    Landing Page
+                    Live Link
                   </a>
 
                   <Button

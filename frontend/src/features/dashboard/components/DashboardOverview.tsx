@@ -84,7 +84,7 @@ export function DashboardOverview() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 rounded-full bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-400 border border-blue-500/20 mb-3">
-              <Zap className="h-3.5 w-3.5" /> High-Throughput Ad Server
+              High-Throughput Ad Server
             </div>
             <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white">
               Mini Ad-Serving Control Center
