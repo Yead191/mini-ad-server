@@ -9,6 +9,7 @@ import { CreativeRoutes } from './app/modules/creative/creative.route';
 import { ReportRoutes } from './app/modules/report/report.route';
 import { TrackRoutes } from './app/modules/track/track.route';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
+import { redisClient } from './config/redis';
 import router from './routes';
 import { Morgan } from './shared/morgen';
 
@@ -41,6 +42,29 @@ app.use('/creatives', CreativeRoutes);
 
 // Versioned API routes (/api/v1)
 app.use('/api/v1', router);
+
+// Reset frequency caps endpoint for testing
+app.all('/reset-frequency-caps', async (req: Request, res: Response) => {
+  try {
+    const stream = redisClient.scanStream({ match: 'freq:*' });
+    const keys: string[] = [];
+    for await (const chunk of stream) {
+      keys.push(...chunk);
+    }
+    if (keys.length > 0) {
+      await redisClient.del(...keys);
+    }
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: `Reset frequency caps (${keys.length} keys cleared)`,
+    });
+  } catch (err: any) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
 
 // Live / Health check
 app.get('/health', (req: Request, res: Response) => {

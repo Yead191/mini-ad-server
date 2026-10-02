@@ -10,7 +10,9 @@ const getAd = catchAsync(async (req: Request, res: Response) => {
     req.socket.remoteAddress ||
     '127.0.0.1';
 
-  const ad = await AdService.serveAd(size, clientIp);
+  const ignoreCap = req.query.ignore_cap === 'true';
+
+  const ad = await AdService.serveAd(size, clientIp, ignoreCap);
 
   if (!ad) {
     return res.status(StatusCodes.NO_CONTENT).send();

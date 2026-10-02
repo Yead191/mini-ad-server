@@ -25,6 +25,7 @@ interface ICachedCandidate {
 const serveAd = async (
   sizeParam: string | undefined,
   clientIp: string = '127.0.0.1',
+  ignoreCap: boolean = false
 ): Promise<IAdResponse | null> => {
   if (!sizeParam || typeof sizeParam !== 'string') {
     return null;
@@ -87,13 +88,15 @@ const serveAd = async (
     if (limitReached) {
       continue;
     }
-    const frequencyCapped = await RedisHelper.isFrequencyCapped(
-      candidate.id,
-      clientIp,
-      3,
-    );
-    if (frequencyCapped) {
-      continue;
+    if (!ignoreCap) {
+      const frequencyCapped = await RedisHelper.isFrequencyCapped(
+        candidate.id,
+        clientIp,
+        3,
+      );
+      if (frequencyCapped) {
+        continue;
+      }
     }
 
     eligibleCandidates.push(candidate);

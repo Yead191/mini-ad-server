@@ -151,7 +151,12 @@
         <h1>Daily Tech Chronicle</h1>
         <span class="badge">Publisher Demo Page</span>
       </div>
-      <div class="controls">
+      <div class="controls" style="display:flex; align-items:center; gap:8px;">
+        <label style="font-size:12px; color:#64748b; display:flex; align-items:center; gap:4px; cursor:pointer;">
+          <input type="checkbox" id="bypass-cap-checkbox" style="cursor:pointer;" />
+          Bypass 3/day Cap
+        </label>
+        <button id="reset-cap-btn" onclick="window.resetFrequencyCaps()" style="background:#475569;">Reset Cap (Redis)</button>
         <button id="refresh-ads-btn" onclick="window.reloadAds()">Reload Ads</button>
       </div>
     </header>
@@ -206,13 +211,16 @@
         const size = slot.getAttribute('data-ad-size');
         if (!size) return;
 
-        logEvent('REQUEST', `Fetching ad for slot size: ${size}`);
+        const bypass = document.getElementById('bypass-cap-checkbox')?.checked;
+        const queryUrl = `/ad?size=${encodeURIComponent(size)}${bypass ? '&ignore_cap=true' : ''}`;
 
-        fetch(`/ad?size=${encodeURIComponent(size)}`)
+        logEvent('REQUEST', `Fetching ad for slot size: ${size}${bypass ? ' [Bypass Cap]' : ''}`);
+
+        fetch(queryUrl)
           .then(function (res) {
             if (res.status === 204) {
-              logEvent('EMPTY', `No active ad content available for size: ${size}`, 'info');
-              slot.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;font-size:12px;">No Ad Available (204)</div>';
+              logEvent('EMPTY', `Slot ${size}: 204 No Content. Reason: Reached 3 impressions/day cap for your IP (or campaign limit reached). Check 'Bypass 3/day Cap' or click 'Reset Cap' above to refresh.`, 'info');
+              slot.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#94a3b8;font-size:12px;text-align:center;padding:6px;"><span>No Ad Available (204)</span><span style="font-size:10px;color:#cbd5e1;margin-top:2px;">(Frequency capped at 3/day per IP)</span></div>';
               return null;
             }
             if (!res.ok) {
@@ -273,6 +281,19 @@
 
       window.reloadAds = function () {
         document.querySelectorAll('.ad-slot').forEach(renderAdSlot);
+      };
+
+      window.resetFrequencyCaps = function () {
+        logEvent('SYSTEM', 'Resetting Redis frequency caps for all creatives...', 'info');
+        fetch('/reset-frequency-caps', { method: 'POST' })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            logEvent('SUCCESS', data.message || 'Frequency caps reset successfully!', 'success');
+            window.reloadAds();
+          })
+          .catch(function (err) {
+            logEvent('ERROR', 'Failed to reset caps: ' + err.message, 'info');
+          });
       };
 
       // Initial execution
