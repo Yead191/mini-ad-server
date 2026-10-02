@@ -61,7 +61,7 @@ export function Sidebar() {
               >
                 <Icon
                   className={cn(
-                    "h-5 w-5 flex-shrink-0",
+                    "h-5 w-5 shrink-0",
                     isActive ? "text-slate-900" : "text-slate-400",
                   )}
                 />
@@ -81,7 +81,7 @@ export function Sidebar() {
           className="flex items-center justify-between rounded-xl bg-slate-50 px-3.5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors border border-slate-200/80 shadow-2xs"
         >
           <span className="flex items-center gap-2.5">
-            <ExternalLink className="h-4 w-4 text-slate-500 flex-shrink-0" />
+            <ExternalLink className="h-4 w-4 text-slate-500 shrink-0" />
             Publisher Demo
           </span>
           <span className="rounded-md bg-slate-200/80 px-2 py-0.5 text-xs font-semibold text-slate-600">
