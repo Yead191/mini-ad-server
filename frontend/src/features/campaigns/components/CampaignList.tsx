@@ -54,7 +54,7 @@ export function CampaignList() {
     try {
       const res = await updateCampaign(campaign.id, { status: nextStatus });
       if (res.success) {
-        toast.success(`Campaign ${nextStatus === 'active' ? 'activated' : 'paused'}`);
+        toast.success(`Campaign ${nextStatus === 'active' ? 'resumed' : 'paused'}`);
         setCampaigns((prev) =>
           prev.map((c) => (c.id === campaign.id ? { ...c, status: nextStatus } : c))
         );
@@ -92,14 +92,14 @@ export function CampaignList() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-white">Campaigns</h2>
-          <p className="text-sm text-slate-400">
+          <h2 className="text-xl font-bold tracking-tight text-slate-900">Campaigns</h2>
+          <p className="text-xs text-slate-500 mt-0.5">
             Manage delivery states, impression limits, and associated creatives.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={fetchCampaigns} disabled={loading}>
-            <RefreshCw className={`h-4 w-4 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
+          <Button variant="secondary" size="sm" onClick={fetchCampaigns} disabled={loading}>
+            <RefreshCw className={`h-3.5 w-3.5 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
           <Button variant="primary" size="sm" onClick={() => setIsModalOpen(true)}>
@@ -110,17 +110,17 @@ export function CampaignList() {
       </div>
 
       {loading ? (
-        <div className="flex h-64 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/40">
+        <div className="flex h-64 items-center justify-center rounded-xl border border-slate-200 bg-white">
           <div className="text-center">
-            <RefreshCw className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-2" />
-            <p className="text-sm text-slate-400">Loading campaigns from PostgreSQL...</p>
+            <RefreshCw className="h-6 w-6 animate-spin text-slate-600 mx-auto mb-2" />
+            <p className="text-xs text-slate-500">Loading campaigns...</p>
           </div>
         </div>
       ) : campaigns.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-800 bg-slate-900/20 p-12 text-center">
-          <Layers className="h-10 w-10 text-slate-600 mb-3" />
-          <h3 className="text-base font-semibold text-white">No campaigns found</h3>
-          <p className="text-xs text-slate-400 max-w-sm mt-1 mb-4">
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white p-12 text-center">
+          <Layers className="h-10 w-10 text-slate-400 mb-3" />
+          <h3 className="text-sm font-semibold text-slate-900">No campaigns found</h3>
+          <p className="text-xs text-slate-500 max-w-sm mt-1 mb-4">
             Create your first campaign to start configuring creatives and serving ads.
           </p>
           <Button variant="primary" size="sm" onClick={() => setIsModalOpen(true)}>
@@ -129,64 +129,64 @@ export function CampaignList() {
           </Button>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur-md shadow-sm">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="border-b border-slate-800 bg-slate-950/60 text-xs uppercase font-semibold text-slate-400">
+        <div className="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-2xs">
+          <table className="w-full text-left text-xs text-slate-700">
+            <thead className="border-b border-slate-200/80 bg-slate-50/75 text-[11px] uppercase font-semibold text-slate-500">
               <tr>
-                <th className="px-6 py-4">Campaign Name</th>
-                <th className="px-6 py-4">Status</th>
-                <th className="px-6 py-4">Daily Limit</th>
-                <th className="px-6 py-4">Creatives</th>
-                <th className="px-6 py-4">Total Events</th>
-                <th className="px-6 py-4">Created Date</th>
-                <th className="px-6 py-4 text-right">Actions</th>
+                <th className="px-5 py-3">Campaign Name</th>
+                <th className="px-5 py-3">Status</th>
+                <th className="px-5 py-3">Daily Limit</th>
+                <th className="px-5 py-3">Creatives</th>
+                <th className="px-5 py-3">Total Events</th>
+                <th className="px-5 py-3">Created</th>
+                <th className="px-5 py-3 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
+            <tbody className="divide-y divide-slate-100">
               {campaigns.map((c) => (
                 <tr
                   key={c.id}
-                  className="hover:bg-slate-800/30 transition-colors group"
+                  className="hover:bg-slate-50/75 transition-colors"
                 >
-                  <td className="px-6 py-4">
-                    <div className="font-semibold text-white">{c.name}</div>
-                    <div className="text-xs text-slate-500 font-mono mt-0.5">
-                      ID: {c.id}
+                  <td className="px-5 py-3.5">
+                    <div className="font-semibold text-slate-900">{c.name}</div>
+                    <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                      {c.id}
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-5 py-3.5">
                     <Badge variant={c.status === 'active' ? 'active' : 'paused'}>
                       {c.status.toUpperCase()}
                     </Badge>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="font-mono font-medium text-slate-200">
+                  <td className="px-5 py-3.5">
+                    <span className="font-mono font-medium text-slate-900">
                       {c.daily_impression_limit.toLocaleString()}
                     </span>
-                    <span className="text-xs text-slate-500 block">per day</span>
+                    <span className="text-[10px] text-slate-400 block">per day</span>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300">
-                      <Layers className="h-3.5 w-3.5 text-blue-400" />
+                  <td className="px-5 py-3.5">
+                    <span className="inline-flex items-center gap-1.5 font-semibold text-slate-700">
+                      <Layers className="h-3.5 w-3.5 text-slate-400" />
                       {c._count?.creatives ?? c.creatives?.length ?? 0}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center gap-1.5 text-xs text-slate-300 font-mono">
-                      <Eye className="h-3.5 w-3.5 text-emerald-400" />
+                  <td className="px-5 py-3.5">
+                    <span className="inline-flex items-center gap-1.5 text-slate-700 font-mono">
+                      <Eye className="h-3.5 w-3.5 text-slate-400" />
                       {c._count?.ad_events?.toLocaleString() ?? 0}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-xs text-slate-400">
+                  <td className="px-5 py-3.5 text-slate-500">
                     <span className="inline-flex items-center gap-1">
-                      <Calendar className="h-3 w-3 text-slate-500" />
+                      <Calendar className="h-3 w-3 text-slate-400" />
                       {new Date(c.created_at).toLocaleDateString()}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
+                  <td className="px-5 py-3.5 text-right">
+                    <div className="flex items-center justify-end gap-1.5">
                       <Button
-                        variant={c.status === 'active' ? 'secondary' : 'primary'}
+                        variant="secondary"
                         size="sm"
                         disabled={actionLoadingId === c.id}
                         onClick={() => handleToggleStatus(c)}
@@ -194,12 +194,12 @@ export function CampaignList() {
                       >
                         {c.status === 'active' ? (
                           <>
-                            <Pause className="h-3.5 w-3.5 mr-1 text-amber-400" />
+                            <Pause className="h-3 w-3 mr-1 text-amber-600" />
                             Pause
                           </>
                         ) : (
                           <>
-                            <Play className="h-3.5 w-3.5 mr-1 text-emerald-400" />
+                            <Play className="h-3 w-3 mr-1 text-emerald-600" />
                             Resume
                           </>
                         )}
@@ -211,7 +211,7 @@ export function CampaignList() {
                         onClick={() => handleDelete(c.id)}
                         title="Delete Campaign"
                       >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        <Trash2 className="h-3 w-3" />
                       </Button>
                     </div>
                   </td>

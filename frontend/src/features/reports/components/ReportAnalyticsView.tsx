@@ -58,49 +58,49 @@ export function ReportAnalyticsView() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-white">
+          <h2 className="text-xl font-bold tracking-tight text-slate-900">
             Performance Reports & CTR
           </h2>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-500">
             Real-time attribution telemetry grouped by campaign or calendar day.
           </p>
         </div>
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-800 bg-slate-900/50 p-4 backdrop-blur-md">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200/80 bg-white p-4 shadow-xs">
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-medium uppercase tracking-wider text-slate-500">
               From:
             </span>
             <input
               type="date"
               value={from}
               onChange={(e) => setFrom(e.target.value)}
-              className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-white focus:border-blue-500 focus:outline-none"
+              className="rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-1.5 text-xs text-slate-800 focus:border-slate-400 focus:bg-white focus:outline-none transition-colors"
             />
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-medium uppercase tracking-wider text-slate-500">
               To:
             </span>
             <input
               type="date"
               value={to}
               onChange={(e) => setTo(e.target.value)}
-              className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-white focus:border-blue-500 focus:outline-none"
+              className="rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-1.5 text-xs text-slate-800 focus:border-slate-400 focus:bg-white focus:outline-none transition-colors"
             />
           </div>
 
-          <div className="flex items-center gap-1 rounded-lg border border-slate-800 bg-slate-950 p-1">
+          <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-100/70 p-1">
             <button
               onClick={() => setGroupBy('campaign')}
               className={`rounded-md px-3 py-1 text-xs font-medium transition-all ${
                 groupBy === 'campaign'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               By Campaign
@@ -109,8 +109,8 @@ export function ReportAnalyticsView() {
               onClick={() => setGroupBy('day')}
               className={`rounded-md px-3 py-1 text-xs font-medium transition-all ${
                 groupBy === 'day'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               By Day
@@ -119,7 +119,7 @@ export function ReportAnalyticsView() {
         </div>
 
         <Button variant="primary" size="sm" onClick={fetchReport} disabled={loading}>
-          <RefreshCw className={`h-4 w-4 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`h-3.5 w-3.5 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
           Run Report
         </Button>
       </div>
@@ -149,28 +149,28 @@ export function ReportAnalyticsView() {
       </div>
 
       {/* Data Table */}
-      <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur-md">
-        <div className="border-b border-slate-800 px-6 py-4 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-            <BarChart2 className="h-4 w-4 text-blue-400" />
+      <div className="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-xs">
+        <div className="border-b border-slate-200/80 px-6 py-4 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+            <BarChart2 className="h-4 w-4 text-slate-600" />
             Attribution Breakdown ({groupBy === 'campaign' ? 'Campaign Grouping' : 'Daily Timeline'})
           </h3>
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-slate-500">
             {data.length} {data.length === 1 ? 'record' : 'records'} returned
           </span>
         </div>
 
         {loading ? (
           <div className="flex h-48 items-center justify-center">
-            <RefreshCw className="h-6 w-6 animate-spin text-blue-500" />
+            <RefreshCw className="h-6 w-6 animate-spin text-slate-600" />
           </div>
         ) : data.length === 0 ? (
-          <div className="p-8 text-center text-slate-400 text-sm">
+          <div className="p-8 text-center text-slate-500 text-sm">
             No telemetry records found for this date range. Try broadening the filter.
           </div>
         ) : (
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="border-b border-slate-800 bg-slate-950/60 text-xs uppercase font-semibold text-slate-400">
+          <table className="w-full text-left text-sm text-slate-600">
+            <thead className="border-b border-slate-200/80 bg-slate-50/75 text-xs uppercase font-semibold text-slate-500">
               <tr>
                 <th className="px-6 py-3.5">
                   {groupBy === 'campaign' ? 'Campaign Name' : 'Calendar Date'}
@@ -180,7 +180,7 @@ export function ReportAnalyticsView() {
                 <th className="px-6 py-3.5">CTR Performance</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
+            <tbody className="divide-y divide-slate-100">
               {data.map((item, idx) => {
                 const isCampaign = groupBy === 'campaign';
                 const label = isCampaign
@@ -188,27 +188,27 @@ export function ReportAnalyticsView() {
                   : (item as DayReportItem).date;
 
                 return (
-                  <tr key={idx} className="hover:bg-slate-800/30 transition-colors">
+                  <tr key={idx} className="hover:bg-slate-50/60 transition-colors">
                     <td className="px-6 py-4">
-                      <div className="font-semibold text-white">{label}</div>
+                      <div className="font-semibold text-slate-900">{label}</div>
                       {isCampaign && (
-                        <div className="text-xs font-mono text-slate-500">
+                        <div className="text-xs font-mono text-slate-400">
                           {(item as CampaignReportItem).campaign_id}
                         </div>
                       )}
                     </td>
-                    <td className="px-6 py-4 font-mono">
+                    <td className="px-6 py-4 font-mono text-slate-700">
                       {item.impressions.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 font-mono">
+                    <td className="px-6 py-4 font-mono text-slate-700">
                       {item.clicks.toLocaleString()}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <span className="font-bold text-emerald-400 w-12 font-mono">
+                        <span className="font-bold text-emerald-600 w-12 font-mono">
                           {item.ctr}%
                         </span>
-                        <div className="w-28 h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div className="w-28 h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200/60">
                           <div
                             className="h-full bg-emerald-500 rounded-full transition-all duration-500"
                             style={{

@@ -81,17 +81,17 @@ export function CreativeModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Add New Creative">
+    <Modal isOpen={isOpen} onClose={onClose} title="Add Banner Creative">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
             Assign to Campaign
           </label>
           <select
             value={campaignId}
             onChange={(e) => setCampaignId(e.target.value)}
             required
-            className="w-full rounded-lg border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
           >
             <option value="">Select a Campaign</option>
             {campaigns.map((c) => (
@@ -103,17 +103,17 @@ export function CreativeModal({
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
             Size Slot Preset
           </label>
           <div className="grid grid-cols-3 gap-2">
             <button
               type="button"
               onClick={() => handlePresetChange('300x250')}
-              className={`py-2 px-3 text-xs font-medium rounded-lg border text-center transition-colors ${
+              className={`py-1.5 px-3 text-xs font-medium rounded-lg border text-center transition-colors cursor-pointer ${
                 sizePreset === '300x250'
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-400'
-                  : 'border-slate-700 text-slate-400 hover:bg-slate-800'
+                  ? 'border-slate-900 bg-slate-900 text-white'
+                  : 'border-slate-200 text-slate-700 bg-white hover:bg-slate-50'
               }`}
             >
               300x250 (Medium)
@@ -121,10 +121,10 @@ export function CreativeModal({
             <button
               type="button"
               onClick={() => handlePresetChange('728x90')}
-              className={`py-2 px-3 text-xs font-medium rounded-lg border text-center transition-colors ${
+              className={`py-1.5 px-3 text-xs font-medium rounded-lg border text-center transition-colors cursor-pointer ${
                 sizePreset === '728x90'
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-400'
-                  : 'border-slate-700 text-slate-400 hover:bg-slate-800'
+                  ? 'border-slate-900 bg-slate-900 text-white'
+                  : 'border-slate-200 text-slate-700 bg-white hover:bg-slate-50'
               }`}
             >
               728x90 (Banner)
@@ -132,20 +132,20 @@ export function CreativeModal({
             <button
               type="button"
               onClick={() => handlePresetChange('custom')}
-              className={`py-2 px-3 text-xs font-medium rounded-lg border text-center transition-colors ${
+              className={`py-1.5 px-3 text-xs font-medium rounded-lg border text-center transition-colors cursor-pointer ${
                 sizePreset === 'custom'
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-400'
-                  : 'border-slate-700 text-slate-400 hover:bg-slate-800'
+                  ? 'border-slate-900 bg-slate-900 text-white'
+                  : 'border-slate-200 text-slate-700 bg-white hover:bg-slate-50'
               }`}
             >
-              Custom Size
+              Custom
             </button>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
               Width (px)
             </label>
             <input
@@ -157,11 +157,11 @@ export function CreativeModal({
                 setWidth(parseInt(e.target.value, 10) || 0);
                 setSizePreset('custom');
               }}
-              className="w-full rounded-lg border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
               Height (px)
             </label>
             <input
@@ -173,13 +173,13 @@ export function CreativeModal({
                 setHeight(parseInt(e.target.value, 10) || 0);
                 setSizePreset('custom');
               }}
-              className="w-full rounded-lg border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
             Banner Image URL
           </label>
           <input
@@ -188,12 +188,12 @@ export function CreativeModal({
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
             placeholder="https://example.com/banner.png"
-            className="w-full rounded-lg border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
             Click Destination URL (Landing Page)
           </label>
           <input
@@ -202,11 +202,11 @@ export function CreativeModal({
             value={clickUrl}
             onChange={(e) => setClickUrl(e.target.value)}
             placeholder="https://clientpage.com/product"
-            className="w-full rounded-lg border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
           />
         </div>
 
-        <div className="flex justify-end gap-2 pt-4 border-t border-slate-800">
+        <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
           <Button type="button" variant="ghost" onClick={onClose} disabled={loading}>
             Cancel
           </Button>

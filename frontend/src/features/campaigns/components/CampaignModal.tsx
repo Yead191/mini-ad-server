@@ -55,10 +55,10 @@ export function CampaignModal({ isOpen, onClose, onSuccess }: CampaignModalProps
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Create New Campaign">
+    <Modal isOpen={isOpen} onClose={onClose} title="Create Campaign">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
             Campaign Name
           </label>
           <input
@@ -66,13 +66,13 @@ export function CampaignModal({ isOpen, onClose, onSuccess }: CampaignModalProps
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Q4 Growth Sprint"
-            className="w-full rounded-lg border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            placeholder="e.g. Q4 Performance Campaign"
+            className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
             Daily Impression Limit
           </label>
           <input
@@ -81,28 +81,28 @@ export function CampaignModal({ isOpen, onClose, onSuccess }: CampaignModalProps
             min={1}
             value={limit}
             onChange={(e) => setLimit(parseInt(e.target.value, 10) || 0)}
-            className="w-full rounded-lg border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
           />
           <p className="mt-1 text-xs text-slate-500">
-            Ad server stops serving once campaign reaches this daily limit.
+            Ad server stops serving once campaign reaches this daily impression count.
           </p>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
             Initial Status
           </label>
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as 'active' | 'paused')}
-            className="w-full rounded-lg border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
           >
             <option value="active">Active (Eligible for ad serving)</option>
             <option value="paused">Paused (Do not serve)</option>
           </select>
         </div>
 
-        <div className="flex justify-end gap-2 pt-4 border-t border-slate-800">
+        <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
           <Button type="button" variant="ghost" onClick={onClose} disabled={loading}>
             Cancel
           </Button>

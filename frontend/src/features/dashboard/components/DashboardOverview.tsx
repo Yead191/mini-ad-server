@@ -12,15 +12,12 @@ import {
   Layers,
   Image as ImageIcon,
   Eye,
-  MousePointerClick,
   Percent,
   PlaySquare,
-  BarChart3,
   ExternalLink,
   ShieldCheck,
   Zap,
   Cpu,
-  RefreshCw,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -79,40 +76,34 @@ export function DashboardOverview() {
 
   return (
     <div className="space-y-8">
-      {/* Hero Welcome banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-slate-800 bg-linear-to-r from-blue-900/30 via-indigo-900/20 to-slate-900/40 p-6 md:p-8 backdrop-blur-md">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-400 border border-blue-500/20 mb-3">
-              High-Throughput Ad Server
-            </div>
-            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white">
-              Mini Ad-Serving Control Center
-            </h1>
-            <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-              Real-time campaign routing, sub-millisecond creative decisioning
-              via Redis caching, frequency capping, and 302 click redirect
-              attribution.
-            </p>
-          </div>
+      {/* Header section - clean & functional */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+        <div>
+          <h1 className="text-xl font-bold tracking-tight text-slate-900">
+            Ad Server Dashboard
+          </h1>
+          <p className="mt-1 text-xs text-slate-500">
+            Real-time campaign routing, Redis caching, daily caps, and attribution tracking.
+          </p>
+        </div>
 
-          <div className="flex flex-wrap gap-3">
-            <Link href="/simulator">
-              <Button variant="primary">
-                <PlaySquare className="h-4 w-4 mr-2" />
-                Live Ad Simulator
-              </Button>
-            </Link>
-            <a
-              href="http://localhost:5000/demo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center font-medium rounded-lg px-4 py-2 text-sm bg-slate-800 text-slate-100 hover:bg-slate-700 transition-colors border border-slate-700 shadow-sm"
-            >
-              <ExternalLink className="h-4 w-4 mr-2 text-blue-400" />
-              Publisher Demo Page
-            </a>
-          </div>
+        <div className="flex items-center gap-2.5">
+          <Link href="/simulator">
+            <Button variant="primary" size="sm">
+              <PlaySquare className="h-4 w-4 mr-1.5" />
+              Live Ad Simulator
+            </Button>
+          </Link>
+          <a
+            href="http://localhost:5000/demo"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button variant="secondary" size="sm">
+              <ExternalLink className="h-3.5 w-3.5 mr-1.5 text-slate-500" />
+              Publisher Demo
+            </Button>
+          </a>
         </div>
       </div>
 
@@ -122,13 +113,13 @@ export function DashboardOverview() {
           title="Active Campaigns"
           value={loading ? "..." : `${activeCampaigns} / ${campaigns.length}`}
           icon={Layers}
-          subtext="Eligible for live ad selection"
+          subtext="Eligible for ad serving"
         />
         <MetricCard
           title="Banner Creatives"
           value={loading ? "..." : creativesCount}
           icon={ImageIcon}
-          subtext="300x250, 728x90 sizes"
+          subtext="Configured banner dimensions"
         />
         <MetricCard
           title="Total Impressions"
@@ -146,69 +137,56 @@ export function DashboardOverview() {
         />
       </div>
 
-      {/* Architecture Highlights & Bonus Implementation Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur-md">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="rounded-lg bg-blue-500/10 p-2.5 text-blue-400">
-              <Cpu className="h-5 w-5" />
+      {/* Architecture Highlights & Engine Specifications */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-2xs">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="rounded-lg bg-blue-50 p-2 text-blue-700">
+              <Cpu className="h-4 w-4" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white">
+              <h3 className="text-sm font-semibold text-slate-900">
                 Redis Candidate Caching
               </h3>
-              <span className="text-xs text-slate-400">
-                Bonus 1 (Completed)
-              </span>
+              <span className="text-[11px] text-slate-500">Sub-millisecond candidate lookup</span>
             </div>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            Candidate creatives are cached per dimensions (
-            <code className="text-blue-400">ad_candidates:300x250</code>) with a
-            60-second TTL. Automatically invalidated upon campaign or creative
-            updates.
+          <p className="text-xs text-slate-600 leading-relaxed">
+            Eligible creatives are cached by dimension (<code className="rounded bg-slate-100 px-1 py-0.5 text-slate-700 font-mono text-[11px]">ad_candidates:300x250</code>) with a 60-second TTL. Flushed on campaign updates.
           </p>
         </div>
 
-        <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur-md">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="rounded-lg bg-emerald-500/10 p-2.5 text-emerald-400">
-              <ShieldCheck className="h-5 w-5" />
+        <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-2xs">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="rounded-lg bg-emerald-50 p-2 text-emerald-700">
+              <ShieldCheck className="h-4 w-4" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white">
+              <h3 className="text-sm font-semibold text-slate-900">
                 IP Frequency Capping
               </h3>
-              <span className="text-xs text-slate-400">
-                Bonus 2 (Completed)
-              </span>
+              <span className="text-[11px] text-slate-500">Ad fatigue prevention</span>
             </div>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            Restricts delivery to a maximum of 3 impressions per creative per
-            client IP per day using Redis daily counters with automatic 24-hour
-            expiration.
+          <p className="text-xs text-slate-600 leading-relaxed">
+            Restricts delivery to a maximum of 3 impressions per creative per client IP per day using Redis daily counters with 24-hour expiration.
           </p>
         </div>
 
-        <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur-md">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="rounded-lg bg-indigo-500/10 p-2.5 text-indigo-400">
-              <Zap className="h-5 w-5" />
+        <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-2xs">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="rounded-lg bg-purple-50 p-2 text-purple-700">
+              <Zap className="h-4 w-4" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white">
+              <h3 className="text-sm font-semibold text-slate-900">
                 Daily Impression Limit
               </h3>
-              <span className="text-xs text-slate-400">
-                Bonus 3 (Completed)
-              </span>
+              <span className="text-[11px] text-slate-500">Budget enforcement</span>
             </div>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            Enforces each campaign&apos;s configured{" "}
-            <code className="text-indigo-400">daily_impression_limit</code>,
-            preventing over-delivery once the daily target is reached.
+          <p className="text-xs text-slate-600 leading-relaxed">
+            Enforces each campaign&apos;s configured <code className="rounded bg-slate-100 px-1 py-0.5 text-slate-700 font-mono text-[11px]">daily_impression_limit</code>, preventing over-delivery once daily impression target is achieved.
           </p>
         </div>
       </div>

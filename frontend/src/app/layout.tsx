@@ -6,7 +6,7 @@ import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
   title: 'AdForge | Mini Ad Server Engine',
-  description: 'High-performance Ad Server management, tracking, and CTR analytics',
+  description: 'High-performance ad decisioning, tracking, and telemetry',
 };
 
 export default function RootLayout({
@@ -15,8 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-blue-500/20 selection:text-blue-300">
+    <html lang="en">
+      <body className="min-h-screen bg-slate-50/70 text-slate-900 flex flex-col antialiased selection:bg-blue-100 selection:text-blue-900">
         <Toaster position="top-right" richColors />
         <div className="flex flex-1 min-h-screen">
           <Sidebar />

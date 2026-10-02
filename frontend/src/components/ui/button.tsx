@@ -10,19 +10,19 @@ export interface ButtonProps
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', ...props }, ref) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer';
+      'inline-flex items-center justify-center font-medium transition-all rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:pointer-events-none cursor-pointer';
 
     const variants = {
-      primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm',
-      secondary: 'bg-slate-800 text-slate-100 hover:bg-slate-700 focus:ring-slate-500',
-      outline: 'border border-slate-700 text-slate-200 hover:bg-slate-800 hover:text-white',
-      danger: 'bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500',
-      ghost: 'text-slate-400 hover:text-slate-100 hover:bg-slate-800',
+      primary: 'bg-slate-900 text-white hover:bg-slate-800 focus:ring-slate-900 shadow-xs active:scale-[0.99]',
+      secondary: 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-xs focus:ring-slate-400',
+      outline: 'border border-slate-300 text-slate-700 bg-white hover:bg-slate-50 hover:border-slate-400 shadow-xs',
+      danger: 'bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 hover:border-rose-300 focus:ring-rose-500',
+      ghost: 'text-slate-600 hover:text-slate-900 hover:bg-slate-100',
     };
 
     const sizes = {
-      sm: 'px-3 py-1.5 text-xs',
-      md: 'px-4 py-2 text-sm',
+      sm: 'px-2.5 py-1.5 text-xs',
+      md: 'px-3.5 py-2 text-sm',
       lg: 'px-5 py-2.5 text-base',
     };
 

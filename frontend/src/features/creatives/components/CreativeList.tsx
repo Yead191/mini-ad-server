@@ -75,22 +75,22 @@ export function CreativeList() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-white">
+          <h2 className="text-xl font-bold tracking-tight text-slate-900">
             Creatives
           </h2>
-          <p className="text-sm text-slate-400">
+          <p className="text-xs text-slate-500 mt-0.5">
             Banners, dimensions, image assets, and tracking landing pages.
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Button
-            variant="outline"
+            variant="secondary"
             size="sm"
             onClick={fetchData}
             disabled={loading}
           >
             <RefreshCw
-              className={`h-4 w-4 mr-1.5 ${loading ? "animate-spin" : ""}`}
+              className={`h-3.5 w-3.5 mr-1.5 ${loading ? "animate-spin" : ""}`}
             />
             Refresh
           </Button>
@@ -106,16 +106,16 @@ export function CreativeList() {
       </div>
 
       {loading ? (
-        <div className="flex h-64 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/40">
-          <RefreshCw className="h-8 w-8 animate-spin text-blue-500" />
+        <div className="flex h-64 items-center justify-center rounded-xl border border-slate-200 bg-white">
+          <RefreshCw className="h-6 w-6 animate-spin text-slate-500" />
         </div>
       ) : creatives.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-800 bg-slate-900/20 p-12 text-center">
-          <ImageIcon className="h-10 w-10 text-slate-600 mb-3" />
-          <h3 className="text-base font-semibold text-white">
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white p-12 text-center">
+          <ImageIcon className="h-10 w-10 text-slate-400 mb-3" />
+          <h3 className="text-sm font-semibold text-slate-900">
             No creatives found
           </h3>
-          <p className="text-xs text-slate-400 max-w-sm mt-1 mb-4">
+          <p className="text-xs text-slate-500 max-w-sm mt-1 mb-4">
             Add banner creatives with width, height, and destination links.
           </p>
           <Button
@@ -132,10 +132,10 @@ export function CreativeList() {
           {creatives.map((c) => (
             <div
               key={c.id}
-              className="flex flex-col justify-between overflow-hidden rounded-xl border border-slate-800 bg-slate-900/60 backdrop-blur-md transition-all hover:border-slate-700"
+              className="flex flex-col justify-between overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-2xs transition-all hover:border-slate-300"
             >
               {/* Image Preview Banner */}
-              <div className="relative h-44 bg-slate-950 flex items-center justify-center overflow-hidden border-b border-slate-800 p-2">
+              <div className="relative h-44 bg-slate-50 flex items-center justify-center overflow-hidden border-b border-slate-100 p-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={c.image_url}
@@ -146,7 +146,7 @@ export function CreativeList() {
                   }}
                 />
                 <div className="absolute top-2 right-2">
-                  <Badge variant="info">
+                  <Badge variant="neutral">
                     {c.width} × {c.height}
                   </Badge>
                 </div>
@@ -155,24 +155,24 @@ export function CreativeList() {
               {/* Details */}
               <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
                 <div>
-                  <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
-                    <Layers className="h-3.5 w-3.5 text-blue-400" />
-                    <span className="font-medium text-slate-300 truncate">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-1">
+                    <Layers className="h-3.5 w-3.5 text-slate-400" />
+                    <span className="font-medium text-slate-700 truncate">
                       {c.campaign?.name || "Unassigned"}
                     </span>
                   </div>
 
-                  <div className="text-xs font-mono text-slate-500 truncate">
+                  <div className="text-[11px] font-mono text-slate-400 truncate">
                     ID: {c.id}
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
+                <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
                   <a
                     href={c.click_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 font-medium truncate max-w-[200px]"
+                    className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium truncate max-w-[200px]"
                   >
                     <ExternalLink className="h-3 w-3 flex-shrink-0" />
                     Live Link
