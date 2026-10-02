@@ -23,12 +23,24 @@ export const getCreativeById = async (
 };
 
 export const createCreative = async (
-  payload: CreateCreativePayload
+  payload: CreateCreativePayload | FormData
 ): Promise<FetchResponse<Creative>> => {
   return await nextFetch<Creative>("/creatives", {
     method: "POST",
     body: payload,
   });
+};
+
+export const uploadCreativeImage = async (
+  formData: FormData
+): Promise<FetchResponse<{ url: string; path: string; filename: string; size: number }>> => {
+  return await nextFetch<{ url: string; path: string; filename: string; size: number }>(
+    "/creatives/upload",
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
 };
 
 export const updateCreative = async (

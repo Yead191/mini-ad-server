@@ -27,8 +27,9 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static publisher demo
+// Serve static publisher demo and uploaded assets
 app.use(express.static(path.join(process.cwd(), 'public')));
+app.use('/uploads', express.static(path.join(process.cwd(), 'public', 'uploads')));
 app.get('/demo', (req: Request, res: Response) => {
   res.sendFile(path.join(process.cwd(), 'public', 'publisher.html'));
 });

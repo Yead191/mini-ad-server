@@ -63,10 +63,37 @@ const deleteCreative = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const uploadCreativeImage = catchAsync(async (req: Request, res: Response) => {
+  if (!req.file) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      success: false,
+      message: 'Please provide an image file to upload',
+    });
+    return;
+  }
+
+  const host = req.get('host') || 'localhost:5000';
+  const protocol = req.protocol || 'http';
+  const url = `${protocol}://${host}/uploads/creatives/${req.file.filename}`;
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Image uploaded successfully',
+    data: {
+      url,
+      path: `/uploads/creatives/${req.file.filename}`,
+      filename: req.file.filename,
+      size: req.file.size,
+    },
+  });
+});
+
 export const CreativeController = {
   createCreative,
   getAllCreatives,
   getCreativeById,
   updateCreative,
   deleteCreative,
+  uploadCreativeImage,
 };
