@@ -75,7 +75,7 @@ export function Sidebar() {
       {/* External Publisher Demo link */}
       <div className="border-t border-slate-100 pt-4 mt-6">
         <a
-          href="http://localhost:5000/demo"
+          href="/demo"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-between rounded-xl bg-slate-50 px-3.5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors border border-slate-200/80 shadow-2xs"

@@ -151,7 +151,7 @@ export function LivePublisherSimulator() {
             Reload Both Slots
           </Button>
           <a
-            href="http://localhost:5000/demo"
+            href="/demo"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center font-medium rounded-lg px-3 py-1.5 text-xs bg-slate-900 text-white hover:bg-slate-800 transition-colors shadow-xs"
