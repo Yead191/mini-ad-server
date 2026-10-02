@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Campaign {
+  id                     String     @id @default(cuid())
+  name                   String
+  status                 String     @default("active") // "active" | "paused"
+  daily_impression_limit Int        @default(1000)
+  created_at             DateTime   @default(now())
+  updated_at             DateTime   @updatedAt
+
+  creatives              Creative[]
+  ad_events              AdEvent[]
+
+  @@index([status])
+  @@map("campaigns")
+}
+
+model Creative {
+  id          String    @id @default(cuid())
+  campaign_id String
+  width       Int
+  height      Int
+  image_url   String
+  click_url   String // destination landing page
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  campaign    Campaign  @relation(fields: [campaign_id], references: [id], onDelete: Cascade)
+  ad_events   AdEvent[]
+
+  @@index([campaign_id])
+  @@index([width, height])
+  @@map("creatives")
+}
+
+model AdEvent {
+  id          String    @id @default(cuid())
+  campaign_id String
+  creative_id String
+  type        String    // "impression" | "click"
+  ip          String?
+  user_agent  String?
+  created_at  DateTime  @default(now())
+
+  campaign    Campaign  @relation(fields: [campaign_id], references: [id], onDelete: Cascade)
+  creative    Creative  @relation(fields: [creative_id], references: [id], onDelete: Cascade)
+
+  @@index([campaign_id, type, created_at])
+  @@index([creative_id, type, created_at])
+  @@index([type, created_at])
+  @@map("ad_events")
+}

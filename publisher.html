@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publisher Demo - Mini Ad Server</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
+      padding: 24px;
+    }
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    header {
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #e0f2fe;
+      color: #0369a1;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      padding: 8px 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .ad-section {
+      margin-bottom: 36px;
+    }
+    .ad-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+    /* Ad slots styling */
+    .ad-slot-leaderboard {
+      width: 728px;
+      height: 90px;
+      margin: 0 auto 24px auto;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+      overflow: hidden;
+    }
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 32px;
+    }
+    .main-article {
+      color: #334155;
+    }
+    .main-article h2 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+    .main-article p {
+      margin-bottom: 14px;
+    }
+    .ad-slot-medium-rectangle {
+      width: 300px;
+      height: 250px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+      overflow: hidden;
+    }
+    .event-log {
+      margin-top: 36px;
+      padding: 16px;
+      background: #0f172a;
+      border-radius: 8px;
+      color: #38bdf8;
+      font-family: monospace;
+      font-size: 13px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+    .event-log div {
+      margin-bottom: 4px;
+    }
+    .event-log .time {
+      color: #94a3b8;
+    }
+    .event-log .success {
+      color: #4ade80;
+    }
+    .event-log .info {
+      color: #facc15;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Daily Tech Chronicle</h1>
+        <span class="badge">Publisher Demo Page</span>
+      </div>
+      <div class="controls">
+        <button id="refresh-ads-btn" onclick="window.reloadAds()">Reload Ads</button>
+      </div>
+    </header>
+
+    <!-- Top Leaderboard Ad Slot (728x90) -->
+    <div class="ad-section">
+      <div class="ad-label">Advertisement (728x90 Leaderboard)</div>
+      <div id="slot-leaderboard" class="ad-slot ad-slot-leaderboard" data-ad-size="728x90">
+        <span style="font-size: 12px; color: #94a3b8;">Loading 728x90 Ad...</span>
+      </div>
+    </div>
+
+    <!-- Article Content + Sidebar -->
+    <div class="content-grid">
+      <div class="main-article">
+        <h2>Modern Ad Serving Architecture in High-Traffic Systems</h2>
+        <p>In high-performance ad networks, latency is measured in milliseconds. When a publisher page requests an ad slot, the ad server must filter eligible campaigns, verify frequency caps, enforce budget limits, and respond with an optimal creative instantly.</p>
+        <p>Redis caching allows candidates to be queried with sub-millisecond overhead, and atomic counters prevent overselling impressions. Click tracking through transparent redirects provides fraud resistance and real-time CTR attribution.</p>
+      </div>
+
+      <!-- Medium Rectangle Ad Slot (300x250) -->
+      <aside>
+        <div class="ad-section">
+          <div class="ad-label">Advertisement (300x250 Rectangle)</div>
+          <div id="slot-rectangle" class="ad-slot ad-slot-medium-rectangle" data-ad-size="300x250">
+            <span style="font-size: 12px; color: #94a3b8;">Loading 300x250 Ad...</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Client Event Telemetry Log -->
+    <div class="event-log" id="telemetry-log">
+      <div><span class="time">[INIT]</span> Ad tag initialized. Ready to fetch ad slots.</div>
+    </div>
+  </div>
+
+  <!-- Ad Tag Snippet -->
+  <script>
+    (function () {
+      function logEvent(type, message, level = 'info') {
+        const logBox = document.getElementById('telemetry-log');
+        if (!logBox) return;
+        const now = new Date().toTimeString().split(' ')[0];
+        const entry = document.createElement('div');
+        entry.innerHTML = `<span class="time">[${now}]</span> <span class="${level}">[${type}]</span> ${message}`;
+        logBox.appendChild(entry);
+        logBox.scrollTop = logBox.scrollHeight;
+      }
+
+      function renderAdSlot(slot) {
+        const size = slot.getAttribute('data-ad-size');
+        if (!size) return;
+
+        logEvent('REQUEST', `Fetching ad for slot size: ${size}`);
+
+        fetch(`/ad?size=${encodeURIComponent(size)}`)
+          .then(function (res) {
+            if (res.status === 204) {
+              logEvent('EMPTY', `No active ad content available for size: ${size}`, 'info');
+              slot.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;font-size:12px;">No Ad Available (204)</div>';
+              return null;
+            }
+            if (!res.ok) {
+              throw new Error(`HTTP Error: ${res.status}`);
+            }
+            return res.json();
+          })
+          .then(function (ad) {
+            if (!ad) return;
+
+            logEvent('RESPONSE', `Ad received for ${size} (creative_id: ${ad.creative_id})`, 'success');
+
+            let impressionFired = false;
+            function fireImpressionOnce() {
+              if (impressionFired) return;
+              impressionFired = true;
+
+              // Count impression when creative is loaded in browser
+              const pixel = new Image();
+              pixel.src = ad.impression_url;
+              logEvent('TRACK', `Impression pixel fired: ${ad.impression_url}`, 'success');
+            }
+
+            // Create wrapper link to tracking click_url
+            const link = document.createElement('a');
+            link.href = ad.click_url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.style.display = 'block';
+            link.style.width = '100%';
+            link.style.height = '100%';
+
+            // Parse returned html
+            const temp = document.createElement('div');
+            temp.innerHTML = ad.html;
+            const img = temp.querySelector('img');
+
+            if (img) {
+              img.onload = function () {
+                fireImpressionOnce();
+              };
+              if (img.complete) {
+                fireImpressionOnce();
+              }
+              link.appendChild(img);
+            } else {
+              link.innerHTML = ad.html;
+              fireImpressionOnce();
+            }
+
+            slot.innerHTML = '';
+            slot.appendChild(link);
+          })
+          .catch(function (err) {
+            logEvent('ERROR', `Slot ${size} error: ${err.message}`, 'info');
+          });
+      }
+
+      window.reloadAds = function () {
+        document.querySelectorAll('.ad-slot').forEach(renderAdSlot);
+      };
+
+      // Initial execution
+      window.reloadAds();
+    })();
+  </script>
+</body>
+</html>
