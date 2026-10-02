@@ -236,9 +236,9 @@
               logEvent('TRACK', `Impression pixel fired: ${ad.impression_url}`, 'success');
             }
 
-            // Create wrapper link to tracking click_url
+            // Create wrapper link to tracking click_url so clicking goes through /track/click
             const link = document.createElement('a');
-            link.href = ad.click_url;
+            link.href = ad.click_url; // Tracking click URL (/track/click?c=<id>)
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
             link.style.display = 'block';
