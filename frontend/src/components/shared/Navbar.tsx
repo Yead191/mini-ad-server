@@ -1,20 +1,11 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { ExternalLink } from 'lucide-react';
+import React from "react";
+import { ExternalLink } from "lucide-react";
 
 export function Navbar() {
   return (
-    <header className="flex h-14 items-center justify-between border-b border-slate-200/80 bg-white px-6">
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 text-xs font-medium text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/80">
-          <span className="relative flex h-2 w-2">
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
-          </span>
-          Engine Active: PostgreSQL + Redis + Express
-        </div>
-      </div>
-
+    <header className="flex h-14 items-center justify-end border-b border-slate-200/80 bg-white px-6">
       <div className="flex items-center gap-3">
         <a
           href="http://localhost:5000/demo"

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   BarChart3,
   Layers,
@@ -10,28 +10,25 @@ import {
   PlaySquare,
   ExternalLink,
   Target,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const navigationItems = [
-  { name: 'Overview', href: '/', icon: Target },
-  { name: 'Campaigns', href: '/campaigns', icon: Layers },
-  { name: 'Creatives', href: '/creatives', icon: ImageIcon },
-  { name: 'Reports & CTR', href: '/reports', icon: BarChart3 },
-  { name: 'Ad Simulator', href: '/simulator', icon: PlaySquare },
+  { name: "Overview", href: "/", icon: Target },
+  { name: "Campaigns", href: "/campaigns", icon: Layers },
+  { name: "Creatives", href: "/creatives", icon: ImageIcon },
+  { name: "Reports & CTR", href: "/reports", icon: BarChart3 },
+  { name: "Ad Simulator", href: "/simulator", icon: PlaySquare },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="sticky top-0 h-screen w-64 flex-shrink-0 border-r border-slate-200/80 bg-white p-5 flex flex-col justify-between hidden md:flex z-30 overflow-y-auto">
+    <aside className="sticky top-0 h-screen w-64 shrink-0 border-r border-slate-200/80 bg-white p-5  flex-col justify-between hidden md:flex z-30 overflow-y-auto">
       <div>
         {/* Brand header */}
         <div className="flex items-center gap-3 px-2 py-2 mb-6">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white font-bold text-base shadow-xs">
-            A
-          </div>
           <div>
             <h1 className="font-bold text-slate-900 text-base tracking-tight leading-tight">
               AdForge
@@ -46,8 +43,8 @@ export function Sidebar() {
         <nav className="space-y-1.5">
           {navigationItems.map((item) => {
             const isActive =
-              item.href === '/'
-                ? pathname === '/'
+              item.href === "/"
+                ? pathname === "/"
                 : pathname.startsWith(item.href);
             const Icon = item.icon;
 
@@ -56,16 +53,16 @@ export function Sidebar() {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  'flex items-center gap-3.5 rounded-xl px-3.5 py-3 text-sm font-medium transition-all',
+                  "flex items-center gap-3.5 rounded-xl px-3.5 py-3 text-sm font-medium transition-all",
                   isActive
-                    ? 'bg-slate-100 text-slate-900 font-semibold shadow-2xs'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    ? "bg-slate-100 text-slate-900 font-semibold shadow-2xs"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
                 )}
               >
                 <Icon
                   className={cn(
-                    'h-5 w-5 flex-shrink-0',
-                    isActive ? 'text-slate-900' : 'text-slate-400'
+                    "h-5 w-5 flex-shrink-0",
+                    isActive ? "text-slate-900" : "text-slate-400",
                   )}
                 />
                 <span className="leading-none">{item.name}</span>
