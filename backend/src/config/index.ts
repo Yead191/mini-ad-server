@@ -11,7 +11,9 @@ export default {
   base_url: process.env.BASE_URL || 'http://localhost:5000',
   project_name: process.env.PROJECT_NAME || 'Mini Ad Server',
   redis: {
+    url: process.env.REDIS_URL,
     host: process.env.REDIS_HOST || '127.0.0.1',
     port: process.env.REDIS_PORT || 6379,
+    password: process.env.REDIS_PASSWORD,
   },
 };
