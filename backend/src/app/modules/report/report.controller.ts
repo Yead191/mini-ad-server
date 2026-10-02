@@ -10,7 +10,6 @@ const getReport = catchAsync(async (req: Request, res: Response) => {
 
   const result = await ReportService.generateReport(from, to, groupBy);
 
-  // Return the report JSON as specified in the PDF
   return res.status(StatusCodes.OK).json(result);
 });
 

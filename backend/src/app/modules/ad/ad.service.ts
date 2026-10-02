@@ -24,14 +24,16 @@ interface ICachedCandidate {
 
 const serveAd = async (
   sizeParam: string | undefined,
-  clientIp: string = '127.0.0.1'
+  clientIp: string = '127.0.0.1',
 ): Promise<IAdResponse | null> => {
   if (!sizeParam || typeof sizeParam !== 'string') {
     return null;
   }
 
-  // Parse size e.g. "300x250"
-  const sizeMatch = sizeParam.trim().toLowerCase().match(/^(\d+)x(\d+)$/);
+  const sizeMatch = sizeParam
+    .trim()
+    .toLowerCase()
+    .match(/^(\d+)x(\d+)$/);
   if (!sizeMatch) {
     return null;
   }
@@ -39,12 +41,10 @@ const serveAd = async (
   const width = parseInt(sizeMatch[1], 10);
   const height = parseInt(sizeMatch[2], 10);
 
-  // Bonus 1: Check Redis cache for candidate list with TTL
   const cacheKey = `ad_candidates:${width}x${height}`;
   let candidates = await RedisHelper.redisGet<ICachedCandidate[]>(cacheKey);
 
   if (!candidates) {
-    // Cache miss: query database for active campaign creatives matching width and height
     const dbCandidates = await prisma.creative.findMany({
       where: {
         width,
@@ -66,7 +66,6 @@ const serveAd = async (
 
     candidates = dbCandidates as ICachedCandidate[];
 
-    // Cache candidates list in Redis with a 60-second TTL
     await RedisHelper.redisSet(cacheKey, candidates, undefined, 60);
   }
 
@@ -74,29 +73,24 @@ const serveAd = async (
     return null;
   }
 
-  // Bonus 2 & 3: Filter candidates by Daily Impression Limit and Frequency Capping
   const eligibleCandidates: ICachedCandidate[] = [];
 
   for (const candidate of candidates) {
-    // Verify campaign is still active
     if (candidate.campaign.status !== 'active') {
       continue;
     }
 
-    // Bonus 3: Enforce each campaign's daily_impression_limit
     const limitReached = await RedisHelper.isDailyLimitReached(
       candidate.campaign_id,
-      candidate.campaign.daily_impression_limit
+      candidate.campaign.daily_impression_limit,
     );
     if (limitReached) {
       continue;
     }
-
-    // Bonus 2: Frequency cap (no more than 3 impressions per creative per IP per day)
     const frequencyCapped = await RedisHelper.isFrequencyCapped(
       candidate.id,
       clientIp,
-      3
+      3,
     );
     if (frequencyCapped) {
       continue;
@@ -109,7 +103,6 @@ const serveAd = async (
     return null;
   }
 
-  // Random selection from active, eligible candidates
   const randomIndex = Math.floor(Math.random() * eligibleCandidates.length);
   const chosen = eligibleCandidates[randomIndex];
 

@@ -6,7 +6,7 @@ import { RedisHelper } from '../../../tools/redis/redis.helper';
 const recordImpression = async (
   creativeId: string,
   ip?: string,
-  userAgent?: string
+  userAgent?: string,
 ): Promise<void> => {
   const creative = await prisma.creative.findUnique({
     where: { id: creativeId },
@@ -27,10 +27,8 @@ const recordImpression = async (
     },
   });
 
-  // Bonus: increment daily impression count for campaign in Redis
   await RedisHelper.incrementDailyImpression(creative.campaign_id);
 
-  // Bonus: increment frequency cap counter for IP + creative
   if (ip) {
     await RedisHelper.incrementFrequencyCap(creative.id, ip);
   }
@@ -39,7 +37,7 @@ const recordImpression = async (
 const recordClick = async (
   creativeId: string,
   ip?: string,
-  userAgent?: string
+  userAgent?: string,
 ): Promise<string> => {
   const creative = await prisma.creative.findUnique({
     where: { id: creativeId },

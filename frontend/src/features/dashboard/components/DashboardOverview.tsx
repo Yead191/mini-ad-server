@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { MetricCard } from '@/components/shared/MetricCard';
-import { Button } from '@/components/ui/button';
-import { getCampaigns } from '@/helpers/next-fetch/campaignActions';
-import { getCreatives } from '@/helpers/next-fetch/creativeActions';
-import { getReport } from '@/helpers/next-fetch/reportActions';
-import { Campaign } from '@/types/campaign';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { MetricCard } from "@/components/shared/MetricCard";
+import { Button } from "@/components/ui/button";
+import { getCampaigns } from "@/helpers/next-fetch/campaignActions";
+import { getCreatives } from "@/helpers/next-fetch/creativeActions";
+import { getReport } from "@/helpers/next-fetch/reportActions";
+import { Campaign } from "@/types/campaign";
 import {
   Layers,
   Image as ImageIcon,
@@ -21,8 +21,8 @@ import {
   Zap,
   Cpu,
   RefreshCw,
-} from 'lucide-react';
-import { toast } from 'sonner';
+} from "lucide-react";
+import { toast } from "sonner";
 
 export function DashboardOverview() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -34,15 +34,15 @@ export function DashboardOverview() {
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
-      const today = new Date().toISOString().split('T')[0];
+      const today = new Date().toISOString().split("T")[0];
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      const fromDate = thirtyDaysAgo.toISOString().split('T')[0];
+      const fromDate = thirtyDaysAgo.toISOString().split("T")[0];
 
       const [campRes, creatRes, repRes] = await Promise.all([
         getCampaigns(),
         getCreatives(),
-        getReport(fromDate, today, 'campaign'),
+        getReport(fromDate, today, "campaign"),
       ]);
 
       if (campRes.success && campRes.data) {
@@ -52,13 +52,16 @@ export function DashboardOverview() {
         setCreativesCount(creatRes.data.length);
       }
       if (repRes.success && repRes.data) {
-        const imps = repRes.data.reduce((acc, curr) => acc + curr.impressions, 0);
+        const imps = repRes.data.reduce(
+          (acc, curr) => acc + curr.impressions,
+          0,
+        );
         const clks = repRes.data.reduce((acc, curr) => acc + curr.clicks, 0);
         setTotalImpressions(imps);
         setTotalClicks(clks);
       }
     } catch {
-      toast.error('Failed to load dashboard metrics');
+      toast.error("Failed to load dashboard metrics");
     } finally {
       setLoading(false);
     }
@@ -68,7 +71,7 @@ export function DashboardOverview() {
     fetchDashboardData();
   }, []);
 
-  const activeCampaigns = campaigns.filter((c) => c.status === 'active').length;
+  const activeCampaigns = campaigns.filter((c) => c.status === "active").length;
   const ctr =
     totalImpressions > 0
       ? Number(((totalClicks / totalImpressions) * 100).toFixed(2))
@@ -77,7 +80,7 @@ export function DashboardOverview() {
   return (
     <div className="space-y-8">
       {/* Hero Welcome banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-r from-blue-900/30 via-indigo-900/20 to-slate-900/40 p-6 md:p-8 backdrop-blur-md">
+      <div className="relative overflow-hidden rounded-2xl border border-slate-800 bg-linear-to-r from-blue-900/30 via-indigo-900/20 to-slate-900/40 p-6 md:p-8 backdrop-blur-md">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 rounded-full bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-400 border border-blue-500/20 mb-3">
@@ -87,7 +90,9 @@ export function DashboardOverview() {
               Mini Ad-Serving Control Center
             </h1>
             <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-              Real-time campaign routing, sub-millisecond creative decisioning via Redis caching, frequency capping, and 302 click redirect attribution.
+              Real-time campaign routing, sub-millisecond creative decisioning
+              via Redis caching, frequency capping, and 302 click redirect
+              attribution.
             </p>
           </div>
 
@@ -115,25 +120,25 @@ export function DashboardOverview() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
           title="Active Campaigns"
-          value={loading ? '...' : `${activeCampaigns} / ${campaigns.length}`}
+          value={loading ? "..." : `${activeCampaigns} / ${campaigns.length}`}
           icon={Layers}
           subtext="Eligible for live ad selection"
         />
         <MetricCard
           title="Banner Creatives"
-          value={loading ? '...' : creativesCount}
+          value={loading ? "..." : creativesCount}
           icon={ImageIcon}
           subtext="300x250, 728x90 sizes"
         />
         <MetricCard
           title="Total Impressions"
-          value={loading ? '...' : totalImpressions.toLocaleString()}
+          value={loading ? "..." : totalImpressions.toLocaleString()}
           icon={Eye}
           subtext="Verified via 1x1 transparent pixel"
         />
         <MetricCard
           title="Click-Through Rate"
-          value={loading ? '...' : `${ctr}%`}
+          value={loading ? "..." : `${ctr}%`}
           change={`${totalClicks} clicks`}
           isPositive={ctr > 2}
           icon={Percent}
@@ -149,12 +154,19 @@ export function DashboardOverview() {
               <Cpu className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white">Redis Candidate Caching</h3>
-              <span className="text-xs text-slate-400">Bonus 1 (Completed)</span>
+              <h3 className="text-sm font-semibold text-white">
+                Redis Candidate Caching
+              </h3>
+              <span className="text-xs text-slate-400">
+                Bonus 1 (Completed)
+              </span>
             </div>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed">
-            Candidate creatives are cached per dimensions (<code className="text-blue-400">ad_candidates:300x250</code>) with a 60-second TTL. Automatically invalidated upon campaign or creative updates.
+            Candidate creatives are cached per dimensions (
+            <code className="text-blue-400">ad_candidates:300x250</code>) with a
+            60-second TTL. Automatically invalidated upon campaign or creative
+            updates.
           </p>
         </div>
 
@@ -164,12 +176,18 @@ export function DashboardOverview() {
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white">IP Frequency Capping</h3>
-              <span className="text-xs text-slate-400">Bonus 2 (Completed)</span>
+              <h3 className="text-sm font-semibold text-white">
+                IP Frequency Capping
+              </h3>
+              <span className="text-xs text-slate-400">
+                Bonus 2 (Completed)
+              </span>
             </div>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed">
-            Restricts delivery to a maximum of 3 impressions per creative per client IP per day using Redis daily counters with automatic 24-hour expiration.
+            Restricts delivery to a maximum of 3 impressions per creative per
+            client IP per day using Redis daily counters with automatic 24-hour
+            expiration.
           </p>
         </div>
 
@@ -179,12 +197,18 @@ export function DashboardOverview() {
               <Zap className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white">Daily Impression Limit</h3>
-              <span className="text-xs text-slate-400">Bonus 3 (Completed)</span>
+              <h3 className="text-sm font-semibold text-white">
+                Daily Impression Limit
+              </h3>
+              <span className="text-xs text-slate-400">
+                Bonus 3 (Completed)
+              </span>
             </div>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed">
-            Enforces each campaign&apos;s configured <code className="text-indigo-400">daily_impression_limit</code>, preventing over-delivery once the daily target is reached.
+            Enforces each campaign&apos;s configured{" "}
+            <code className="text-indigo-400">daily_impression_limit</code>,
+            preventing over-delivery once the daily target is reached.
           </p>
         </div>
       </div>

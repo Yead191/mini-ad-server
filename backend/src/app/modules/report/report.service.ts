@@ -7,14 +7,14 @@ export interface ICampaignReportItem {
   campaign_name: string;
   impressions: number;
   clicks: number;
-  ctr: number; // percentage, e.g. 5.25 (%)
+  ctr: number;
 }
 
 export interface IDayReportItem {
-  date: string; // YYYY-MM-DD
+  date: string;
   impressions: number;
   clicks: number;
-  ctr: number; // percentage
+  ctr: number;
 }
 
 const isValidDateString = (dateStr: string): boolean => {
@@ -26,20 +26,19 @@ const isValidDateString = (dateStr: string): boolean => {
 const generateReport = async (
   from: string | undefined,
   to: string | undefined,
-  groupBy: string = 'campaign'
+  groupBy: string = 'campaign',
 ): Promise<ICampaignReportItem[] | IDayReportItem[]> => {
-  // Validate from and to
   if (!from || !isValidDateString(from)) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
-      'Invalid or missing "from" date. Format must be YYYY-MM-DD.'
+      'Invalid or missing "from" date. Format must be YYYY-MM-DD.',
     );
   }
 
   if (!to || !isValidDateString(to)) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
-      'Invalid or missing "to" date. Format must be YYYY-MM-DD.'
+      'Invalid or missing "to" date. Format must be YYYY-MM-DD.',
     );
   }
 
@@ -49,7 +48,7 @@ const generateReport = async (
   if (startDate > endDate) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
-      '"from" date cannot be after "to" date.'
+      '"from" date cannot be after "to" date.',
     );
   }
 
@@ -58,11 +57,11 @@ const generateReport = async (
   if (normalizedGroupBy !== 'campaign' && normalizedGroupBy !== 'day') {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
-      'Invalid "group_by" parameter. Must be either "campaign" or "day".'
+      'Invalid "group_by" parameter. Must be either "campaign" or "day".',
     );
   }
 
-  // Fetch all events within the date range
+  // Fetch all events
   const events = await prisma.adEvent.findMany({
     where: {
       created_at: {
@@ -87,16 +86,15 @@ const generateReport = async (
     });
 
     const campaignMap = new Map<string, string>();
-    campaigns.forEach((c) => campaignMap.set(c.id, c.name));
+    campaigns.forEach(c => campaignMap.set(c.id, c.name));
 
-    // Group counts by campaign_id
+    // Group counts by campaign id
     const statsByCampaign = new Map<
       string,
       { impressions: number; clicks: number }
     >();
 
-    // Initialize with existing campaigns that have events or all campaigns
-    campaigns.forEach((c) => {
+    campaigns.forEach(c => {
       statsByCampaign.set(c.id, { impressions: 0, clicks: 0 });
     });
 
@@ -132,13 +130,11 @@ const generateReport = async (
     // Sort by impressions descending
     return report.sort((a, b) => b.impressions - a.impressions);
   } else {
-    // Group by day (YYYY-MM-DD)
     const statsByDay = new Map<
       string,
       { impressions: number; clicks: number }
     >();
 
-    // Generate date sequence between from and to (inclusive)
     const current = new Date(startDate);
     const end = new Date(endDate);
 
